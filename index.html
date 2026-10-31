@@ -3,118 +3,320 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SodahTool - 8 Passport Photos</title>
+<title>SodahTool - ऑल इन वन टूल्स</title>
+<meta name="theme-color" content="#101b38">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f0f4f8;padding:20px;text-align:center}
-.box{max-width:800px;margin:auto;background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-h1{color:#101b38;margin-bottom:15px;font-size:24px}
-input[type="file"]{margin:15px 0;font-size:16px}
-.btn{background:#1769d2;color:#fff;border:none;padding:12px 22px;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin:5px}
+body{font-family:Arial,sans-serif;background:#f4f7fc;color:#17233c}
+header{background:#101b38;color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:900}
+.logo span{color:#46d6ff}
+.hero{text-align:center;padding:35px 15px;background:linear-gradient(135deg,#101b38,#174c83);color:white}
+.container{max-width:1000px;margin:30px auto;padding:0 15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:30px}
+.card{background:white;border-radius:14px;padding:20px;border:1px solid #e4eaf4;box-shadow:0 4px 15px rgba(0,0,0,0.06);text-align:center}
+.card .icon{font-size:35px;margin-bottom:10px}
+.card h3{font-size:18px;margin-bottom:8px;color:#101b38}
+.card p{font-size:13px;color:#68778e;margin-bottom:15px;min-height:36px}
+.btn{background:#1769d2;color:white;border:0;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:14px}
+.btn:hover{background:#104d9e}
 .btn-green{background:#28a745}
-canvas{max-width:100%;height:auto;margin-top:20px;border:1px solid #bbb;background:#fff}
-.tip{color:#666;font-size:13px;margin-top:10px}
+.btn-green:hover{background:#218838}
+.tool-box{display:none;background:white;border-radius:14px;padding:25px;margin-top:20px;box-shadow:0 5px 20px rgba(0,0,0,0.08)}
+.tool-box h2{margin-bottom:15px;color:#101b38}
+.tool-box input, .tool-box textarea, .tool-box select{width:100%;padding:10px;margin:8px 0;border:1px solid #d6dfeb;border-radius:6px;font-size:14px}
+.tool-box textarea{height:140px;resize:vertical}
+.preview-area{text-align:center;margin-top:15px;overflow:auto}
+canvas{max-width:100%;height:auto;border:1px solid #ccc;background:#fff;margin-top:10px}
+.tip{font-size:12px;color:#68778e;margin-top:8px}
+footer{background:#101b38;color:#c7d4e7;text-align:center;padding:20px;margin-top:40px;font-size:13px}
 </style>
 </head>
 <body>
 
-<div class="box">
-  <h1>📸 8 पासपोर्ट फोटो मेकर (4×6 शीट)</h1>
-  <p>फोटो अपलोड करें, यह अपने आप पासपोर्ट साइज में फिट होकर 8 फोटो बना देगा।</p>
-  
-  <input type="file" id="upload" accept="image/*"><br>
-  <button class="btn btn-green" onclick="downloadSheet()">फोटो डाउनलोड करें</button>
+<header>
+  <div class="logo">Sodah<span>Tool</span></div>
+  <div>फ्री ऑनलाइन टूल्स</div>
+</header>
 
-  <p class="tip">नोट: फोटो फोन की गैलरी में सिर्फ चेहरे और छाती तक क्रॉप करके अपलोड करेंगे तो रिज़ल्ट सबसे अच्छा आएगा।</p>
+<div class="hero">
+  <h1>सभी टूल्स एक जगह</h1>
+  <p>फोटो और डॉक्यूमेंट्स के लिए आसान और फ्री टूल्स</p>
+</div>
 
-  <div>
-    <canvas id="sheet"></canvas>
+<div class="container">
+  <div class="grid">
+    <!-- टूल 1 -->
+    <div class="card">
+      <div class="icon">📸</div>
+      <h3>1. 8 Passport Size Photos</h3>
+      <p>एक फोटो से 8 पासपोर्ट साइज फोटो तैयार करें</p>
+      <button class="btn" onclick="openTool('passport')">टूल खोलें →</button>
+    </div>
+    <!-- टूल 2 -->
+    <div class="card">
+      <div class="icon">🖼️</div>
+      <h3>2. Image Resizer</h3>
+      <p>फोटो की लंबाई और चौड़ाई बदलें</p>
+      <button class="btn" onclick="openTool('resize')">टूल खोलें →</button>
+    </div>
+    <!-- टूल 3 -->
+    <div class="card">
+      <div class="icon">📝</div>
+      <h3>3. Text to PDF</h3>
+      <p>टेक्स्ट को PDF फाइल में बदलें</p>
+      <button class="btn" onclick="openTool('textpdf')">टूल खोलें →</button>
+    </div>
+    <!-- टूल 4 -->
+    <div class="card">
+      <div class="icon">📄</div>
+      <h3>4. Image to PDF</h3>
+      <p>एक या कई फोटो से PDF बनाएं</p>
+      <button class="btn" onclick="openTool('imagepdf')">टूल खोलें →</button>
+    </div>
+    <!-- टूल 5 -->
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>5. Excel to PDF</h3>
+      <p>Excel फाइल को PDF में बदलें</p>
+      <button class="btn" onclick="openTool('excelpdf')">टूल खोलें →</button>
+    </div>
+  </div>
+
+  <!-- 1. पासपोर्ट फोटो टूल -->
+  <div class="tool-box" id="passport">
+    <h2>📸 8 Passport Size Photos</h2>
+    <input type="file" id="passInput" accept="image/*">
+    <label>बैकग्राउंड रंग चुनें:</label>
+    <select id="passBg" onchange="drawPassport()">
+      <option value="#ffffff">सफेद (White)</option>
+      <option value="#3b82f6">हल्का नीला (Sky Blue)</option>
+      <option value="#1e3a8a">गहरा नीला (Dark Blue)</option>
+      <option value="#ef4444">लाल (Red)</option>
+    </select>
+    <button class="btn btn-green" onclick="downloadPassport()">शीट डाउनलोड करें (4×6)</button>
+    <p class="tip">नोट: फोटो को चेहरे और सीने तक क्रॉप करके अपलोड करें।</p>
+    <div class="preview-area"><canvas id="passCanvas"></canvas></div>
+  </div>
+
+  <!-- 2. इमेज रिसाइज़र -->
+  <div class="tool-box" id="resize">
+    <h2>🖼️ Image Resizer</h2>
+    <input type="file" id="resizeInput" accept="image/*">
+    <label>चौड़ाई (Width in px):</label>
+    <input type="number" id="resW" value="500">
+    <label>ऊंचाई (Height in px):</label>
+    <input type="number" id="resH" value="500">
+    <button class="btn" onclick="processResize()">रिसाइज करें</button>
+    <button class="btn btn-green" onclick="downloadResize()">डाउनलोड करें</button>
+    <div class="preview-area"><canvas id="resizeCanvas"></canvas></div>
+  </div>
+
+  <!-- 3. टेक्स्ट टू PDF -->
+  <div class="tool-box" id="textpdf">
+    <h2>📝 Text to PDF</h2>
+    <input type="text" id="pdfTitle" placeholder="PDF का टाइटल लिखें">
+    <textarea id="pdfContent" placeholder="यहाँ अपना टेक्स्ट लिखें या पेस्ट करें..."></textarea>
+    <button class="btn btn-green" onclick="generateTextPDF()">PDF डाउनलोड करें</button>
+  </div>
+
+  <!-- 4. इमेज टू PDF -->
+  <div class="tool-box" id="imagepdf">
+    <h2>📄 Image to PDF</h2>
+    <input type="file" id="imgPdfInput" accept="image/*" multiple>
+    <p class="tip">एक या एक से ज्यादा फोटो सेलेक्ट करें।</p>
+    <button class="btn btn-green" onclick="generateImagePDF()">PDF बनाएं और डाउनलोड करें</button>
+  </div>
+
+  <!-- 5. एक्सेल टू PDF -->
+  <div class="tool-box" id="excelpdf">
+    <h2>📊 Excel to PDF</h2>
+    <input type="file" id="excelInput" accept=".xlsx, .xls, .csv">
+    <button class="btn btn-green" onclick="generateExcelPDF()">PDF में बदलें</button>
   </div>
 </div>
 
+<footer>
+  <p>© 2026 SodahTool • सभी टूल्स पूरी तरह सुरक्षित और फ्री हैं</p>
+</footer>
+
+<!-- लाइब्रेरीज -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
-let loadedImg = null;
+function openTool(toolId){
+  document.querySelectorAll('.tool-box').forEach(el => el.style.display = 'none');
+  const active = document.getElementById(toolId);
+  active.style.display = 'block';
+  active.scrollIntoView({behavior:'smooth'});
+}
 
-document.getElementById('upload').addEventListener('change', function(e) {
+// 1. PASSPORT TOOL
+let passImg = null;
+document.getElementById('passInput').addEventListener('change', function(e){
   let file = e.target.files[0];
-  if (!file) return;
-
-  let reader = new FileReader();
-  reader.onload = function(event) {
+  if(!file) return;
+  let r = new FileReader();
+  r.onload = function(evt){
     let img = new Image();
-    img.onload = function() {
-      loadedImg = img;
-      drawPhotos();
+    img.onload = function(){
+      passImg = img;
+      drawPassport();
     };
-    img.src = event.target.result;
+    img.src = evt.target.result;
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(file);
 });
 
-function drawPhotos() {
-  let canvas = document.getElementById('sheet');
+function drawPassport(){
+  if(!passImg) return;
+  let canvas = document.getElementById('passCanvas');
   let ctx = canvas.getContext('2d');
+  canvas.width = 1800; canvas.height = 1200;
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // 4x6 inch sheet (Landscape)
-  canvas.width = 1800;
-  canvas.height = 1200;
+  let pw = 400, ph = 500, gx = 35, gy = 45, sx0 = 55, sy0 = 45;
+  let bg = document.getElementById('passBg').value;
 
-  // White Background
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  let pWidth = 400;
-  let pHeight = 500;
-  let gapX = 35;
-  let gapY = 45;
-  let startX = 55;
-  let startY = 45;
-
-  // Center crop logic so photo never stretches
-  let sWidth = loadedImg.width;
-  let sHeight = loadedImg.height;
-  let targetRatio = pWidth / pHeight;
-  let srcRatio = sWidth / sHeight;
-
+  let sRatio = passImg.width / passImg.height;
+  let tRatio = pw / ph;
   let sx, sy, sw, sh;
-  if (srcRatio > targetRatio) {
-    sw = sHeight * targetRatio;
-    sh = sHeight;
-    sx = (sWidth - sw) / 2;
-    sy = 0;
+  if(sRatio > tRatio){
+    sw = passImg.height * tRatio; sh = passImg.height;
+    sx = (passImg.width - sw)/2; sy = 0;
   } else {
-    sw = sWidth;
-    sh = sWidth / targetRatio;
-    sx = 0;
-    sy = (sHeight - sh) / 2;
+    sw = passImg.width; sh = passImg.width / tRatio;
+    sx = 0; sy = (passImg.height - sh)/2;
   }
 
-  // 2 rows x 4 columns = 8 Photos
-  for (let r = 0; r < 2; r++) {
-    for (let c = 0; c < 4; c++) {
-      let x = startX + c * (pWidth + gapX);
-      let y = startY + r * (pHeight + gapY);
-
-      ctx.drawImage(loadedImg, sx, sy, sw, sh, x, y, pWidth, pHeight);
-
-      // Border for scissors cutting
+  for(let r=0; r<2; r++){
+    for(let c=0; c<4; c++){
+      let x = sx0 + c*(pw+gx);
+      let y = sy0 + r*(ph+gy);
+      ctx.fillStyle = bg;
+      ctx.fillRect(x,y,pw,ph);
+      ctx.drawImage(passImg, sx, sy, sw, sh, x, y, pw, ph);
       ctx.strokeStyle = '#cccccc';
       ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, pWidth, pHeight);
+      ctx.strokeRect(x,y,pw,ph);
     }
   }
 }
 
-function downloadSheet() {
-  if (!loadedImg) {
-    alert("पहले कोई फोटो सेलेक्ट करें!");
-    return;
-  }
-  let canvas = document.getElementById('sheet');
+function downloadPassport(){
+  if(!passImg){alert('पहले फोटो चुनें!'); return;}
   let a = document.createElement('a');
   a.download = 'Passport-Photos-8.png';
+  a.href = document.getElementById('passCanvas').toDataURL('image/png');
+  a.click();
+}
+
+// 2. IMAGE RESIZER
+let resImg = null;
+document.getElementById('resizeInput').addEventListener('change', function(e){
+  let file = e.target.files[0];
+  if(!file) return;
+  let r = new FileReader();
+  r.onload = function(evt){
+    let img = new Image();
+    img.onload = function(){ resImg = img; };
+    img.src = evt.target.result;
+  };
+  r.readAsDataURL(file);
+});
+
+function processResize(){
+  if(!resImg){alert('पहले फोटो चुनें!'); return;}
+  let w = parseInt(document.getElementById('resW').value);
+  let h = parseInt(document.getElementById('resH').value);
+  let canvas = document.getElementById('resizeCanvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(resImg, 0, 0, w, h);
+}
+
+function downloadResize(){
+  let canvas = document.getElementById('resizeCanvas');
+  if(!canvas.width){alert('पहले फोटो रिसाइज करें!'); return;}
+  let a = document.createElement('a');
+  a.download = 'Resized-Image.png';
   a.href = canvas.toDataURL('image/png');
   a.click();
+}
+
+// 3. TEXT TO PDF
+function generateTextPDF(){
+  let {jsPDF} = window.jspdf;
+  let title = document.getElementById('pdfTitle').value || 'दस्तावेज़';
+  let text = document.getElementById('pdfContent').value;
+  if(!text.trim()){alert('कृपया कुछ टेक्स्ट लिखें!'); return;}
+  let pdf = new jsPDF();
+  pdf.setFontSize(16); pdf.text(title, 15, 20);
+  pdf.setFontSize(11);
+  let lines = pdf.splitTextToSize(text, 180);
+  let y = 30;
+  lines.forEach(line => {
+    if(y > 280){ pdf.addPage(); y = 20; }
+    pdf.text(line, 15, y); y += 7;
+  });
+  pdf.save('Document.pdf');
+}
+
+// 4. IMAGE TO PDF
+async function generateImagePDF(){
+  let files = [...document.getElementById('imgPdfInput').files];
+  if(!files.length){alert('कृपया फोटो चुनें!'); return;}
+  let {jsPDF} = window.jspdf;
+  let pdf = new jsPDF();
+  for(let i=0; i<files.length; i++){
+    let data = await new Promise((res, rej)=>{
+      let r = new FileReader();
+      r.onload = ()=>res(r.result);
+      r.onerror = rej;
+      r.readAsDataURL(files[i]);
+    });
+    let img = await new Promise((res, rej)=>{
+      let im = new Image();
+      im.onload = ()=>res(im);
+      im.onerror = rej;
+      im.src = data;
+    });
+    if(i > 0) pdf.addPage();
+    let pw = pdf.internal.pageSize.getWidth() - 20;
+    let ph = pdf.internal.pageSize.getHeight() - 20;
+    let ratio = Math.min(pw/img.width, ph/img.height);
+    let w = img.width*ratio, h = img.height*ratio;
+    pdf.addImage(data, 'JPEG', 10+(pw-w)/2, 10+(ph-h)/2, w, h);
+  }
+  pdf.save('Images.pdf');
+}
+
+// 5. EXCEL TO PDF
+function generateExcelPDF(){
+  let file = document.getElementById('excelInput').files[0];
+  if(!file){alert('कृपया Excel फाइल चुनें!'); return;}
+  let reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      let wb = XLSX.read(e.target.result, {type:'array'});
+      let sheet = wb.Sheets[wb.SheetNames[0]];
+      let rows = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
+      let {jsPDF} = window.jspdf;
+      let pdf = new jsPDF({orientation:'landscape'});
+      let y = 15;
+      pdf.setFontSize(8);
+      rows.forEach(row => {
+        let line = row.map(v => String(v)).join(' | ');
+        let lines = pdf.splitTextToSize(line, 270);
+        lines.forEach(l => {
+          if(y > 195){ pdf.addPage(); y = 15; }
+          pdf.text(l, 10, y); y += 6;
+        });
+      });
+      pdf.save('Excel-Document.pdf');
+    }catch(err){alert('फाइल को कन्वर्ट नहीं किया जा सका!');}
+  };
+  reader.readAsArrayBuffer(file);
 }
 </script>
 
