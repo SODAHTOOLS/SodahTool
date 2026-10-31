@@ -1,138 +1,124 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SodahTool - Free Online Tools</title>
-<meta name="theme-color" content="#101b38">
+<title>SodahTool - 8 Passport Photos</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f4f7fc;color:#17233c}
-header{background:#101b38;color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:24px;font-weight:900}
-.logo span{color:#46d6ff}
-.hero{text-align:center;padding:35px 15px;background:linear-gradient(135deg,#101b38,#174c83);color:white}
-.container{max-width:900px;margin:25px auto;padding:0 15px}
-.tool-box{background:white;border-radius:14px;padding:25px;box-shadow:0 4px 15px rgba(0,0,0,0.08);margin-bottom:30px}
-.tool-box h2{margin-bottom:15px;color:#101b38}
-input[type="file"]{margin-bottom:15px;display:block;width:100%}
-.btn-group{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
-button{background:#1769d2;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:15px}
-button:hover{background:#104d9e}
-.preview-box{text-align:center;background:#eaeef5;padding:15px;border-radius:10px;overflow:auto}
-canvas{max-width:100%;height:auto;border:1px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff}
-.note{font-size:13px;color:#555;margin-top:10px;line-height:1.5}
-footer{background:#101b38;color:#c7d4e7;text-align:center;padding:20px;margin-top:40px;font-size:13px}
+body{font-family:Arial,sans-serif;background:#f0f4f8;padding:20px;text-align:center}
+.box{max-width:800px;margin:auto;background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+h1{color:#101b38;margin-bottom:15px;font-size:24px}
+input[type="file"]{margin:15px 0;font-size:16px}
+.btn{background:#1769d2;color:#fff;border:none;padding:12px 22px;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin:5px}
+.btn-green{background:#28a745}
+canvas{max-width:100%;height:auto;margin-top:20px;border:1px solid #bbb;background:#fff}
+.tip{color:#666;font-size:13px;margin-top:10px}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Sodah<span>Tool</span></div>
-  <div>Passport Photo Maker</div>
-</header>
+<div class="box">
+  <h1>📸 8 पासपोर्ट फोटो मेकर (4×6 शीट)</h1>
+  <p>फोटो अपलोड करें, यह अपने आप पासपोर्ट साइज में फिट होकर 8 फोटो बना देगा।</p>
+  
+  <input type="file" id="upload" accept="image/*"><br>
+  <button class="btn btn-green" onclick="downloadSheet()">फोटो डाउनलोड करें</button>
 
-<div class="hero">
-  <h1>8 Passport Size Photos Maker</h1>
-  <p>Standard 4×6 Inch Photo Paper Format (Print Ready)</p>
-</div>
+  <p class="tip">नोट: फोटो फोन की गैलरी में सिर्फ चेहरे और छाती तक क्रॉप करके अपलोड करेंगे तो रिज़ल्ट सबसे अच्छा आएगा।</p>
 
-<div class="container">
-  <div class="tool-box">
-    <h2>📸 पासपोर्ट फोटो शीट बनाएं (8 Photos)</h2>
-    <input type="file" id="passFile" accept="image/*">
-    
-    <div class="btn-group">
-      <button onclick="makePassport()">1. Generate 8 Photos</button>
-      <button onclick="downloadPassport()" style="background:#28a745;">2. Download Sheet (4×6)</button>
-    </div>
-
-    <p class="note">⚠️ <b>टिप:</b> फोटो सेलेक्ट करने से पहले अपने फोन की गैलरी में जाकर चेहरे के आसपास का हिस्सा <b>Crop</b> कर लें (ताकि स्क्रीनशॉट या फालतू बैकग्राउंड न दिखे)।</p>
-
-    <div class="preview-box">
-      <canvas id="passCanvas"></canvas>
-    </div>
+  <div>
+    <canvas id="sheet"></canvas>
   </div>
 </div>
 
-<footer>
-  <p>© 2026 SodahTool • 4×6 Inch High Quality Print Ready</p>
-</footer>
-
 <script>
-let passportImg = null;
+let loadedImg = null;
 
-document.getElementById('passFile').addEventListener('change', function(e) {
+document.getElementById('upload').addEventListener('change', function(e) {
   let file = e.target.files[0];
   if (!file) return;
+
   let reader = new FileReader();
   reader.onload = function(event) {
     let img = new Image();
     img.onload = function() {
-      passportImg = img;
-      makePassport(); // फोटो चुनते ही शीट बना देगा
+      loadedImg = img;
+      drawPhotos();
     };
     img.src = event.target.result;
   };
   reader.readAsDataURL(file);
 });
 
-function makePassport() {
-  if (!passportImg) {
-    alert("कृपया पहले अपनी फोटो चुनें!");
-    return;
-  }
-
-  let canvas = document.getElementById('passCanvas');
+function drawPhotos() {
+  let canvas = document.getElementById('sheet');
   let ctx = canvas.getContext('2d');
 
-  // Standard 4x6 Inch at 300 DPI (1800 x 1200 px Landscape)
+  // 4x6 inch sheet (Landscape)
   canvas.width = 1800;
   canvas.height = 1200;
 
-  // White Background Sheet
+  // White Background
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 35mm x 45mm at 300 DPI
-  let photoW = 413;
-  let photoH = 531;
-
-  // 2 Rows, 4 Columns (Total 8 Photos centered)
-  let startX = 65;
-  let startY = 45;
-  let gapX = 30;
+  let pWidth = 400;
+  let pHeight = 500;
+  let gapX = 35;
   let gapY = 45;
+  let startX = 55;
+  let startY = 45;
 
-  for (let row = 0; row < 2; row++) {
-    for (let col = 0; col < 4; col++) {
-      let x = startX + col * (photoW + gapX);
-      let y = startY + row * (photoH + gapY);
+  // Center crop logic so photo never stretches
+  let sWidth = loadedImg.width;
+  let sHeight = loadedImg.height;
+  let targetRatio = pWidth / pHeight;
+  let srcRatio = sWidth / sHeight;
 
-      // Draw Photo
-      ctx.drawImage(passportImg, x, y, photoW, photoH);
+  let sx, sy, sw, sh;
+  if (srcRatio > targetRatio) {
+    sw = sHeight * targetRatio;
+    sh = sHeight;
+    sx = (sWidth - sw) / 2;
+    sy = 0;
+  } else {
+    sw = sWidth;
+    sh = sWidth / targetRatio;
+    sx = 0;
+    sy = (sHeight - sh) / 2;
+  }
 
-      // Thin Cutting Border
+  // 2 rows x 4 columns = 8 Photos
+  for (let r = 0; r < 2; r++) {
+    for (let c = 0; c < 4; c++) {
+      let x = startX + c * (pWidth + gapX);
+      let y = startY + r * (pHeight + gapY);
+
+      ctx.drawImage(loadedImg, sx, sy, sw, sh, x, y, pWidth, pHeight);
+
+      // Border for scissors cutting
       ctx.strokeStyle = '#cccccc';
       ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, photoW, photoH);
+      ctx.strokeRect(x, y, pWidth, pHeight);
     }
   }
 }
 
-function downloadPassport() {
-  if (!passportImg) {
-    alert("डाउनलोड करने से पहले फोटो अपलोड करें!");
+function downloadSheet() {
+  if (!loadedImg) {
+    alert("पहले कोई फोटो सेलेक्ट करें!");
     return;
   }
-  let canvas = document.getElementById('passCanvas');
-  let link = document.createElement('a');
-  link.download = 'Passport-Photos-4x6.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+  let canvas = document.getElementById('sheet');
+  let a = document.createElement('a');
+  a.download = 'Passport-Photos-8.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
 }
 </script>
 
 </body>
 </html>
+
+
