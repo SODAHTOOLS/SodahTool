@@ -1,1 +1,300 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SodahTool - Free Online Tools</title>
+<meta name="description" content="SodahTool provides free online tools for passport photos, image resizing, text to PDF, image to PDF and Excel to PDF conversion.">
+<meta name="theme-color" content="#101b38">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f7fc;color:#17233c}
+header{background:#101b38;color:white;padding:22px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:27px;font-weight:900;color:#fff}
+.logo span{color:#46d6ff}
+header p{font-size:12px;color:#c5d3e9;margin-top:5px}
+.hero{text-align:center;padding:55px 15px;background:linear-gradient(135deg,#101b38,#174c83);color:white}
+.hero h1{font-size:36px;margin-bottom:14px}
+.hero p{color:#d6e8ff;line-height:1.7}
+.search{margin:25px auto 0;max-width:480px}
+.search input{width:100%;padding:15px;border:0;border-radius:10px;font-size:15px;outline:none}
+.container{max-width:1100px;margin:35px auto;padding:0 15px}
+.heading{text-align:center;margin-bottom:25px}
+.heading h2{font-size:27px;color:#13294b}
+.heading p{color:#66758d;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.card{background:white;border-radius:16px;padding:23px;border:1px solid #e4eaf4;box-shadow:0 5px 20px #102b5010;transition:.2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 25px #102b5020}
+.icon{font-size:35px;margin-bottom:15px}
+.card h3{font-size:18px;margin-bottom:9px}
+.card p{font-size:13px;color:#68778e;line-height:1.6;min-height:42px}
+button,.btn{background:#1769d2;color:white;border:0;padding:12px 17px;border-radius:8px;cursor:pointer;font-weight:bold;margin-top:15px}
+button:hover,.btn:hover{background:#104d9e}
+.tool-box{display:none;background:white;border-radius:16px;padding:25px;margin:30px auto;box-shadow:0 5px 25px #102b5015}
+.tool-box h2{margin-bottom:18px}
+.tool-box input,.tool-box textarea,.tool-box select{width:100%;padding:12px;margin:10px 0;border:1px solid #d6dfeb;border-radius:8px;font-size:14px}
+.tool-box textarea{height:160px;resize:vertical}
+.preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.preview img{max-width:100%;height:auto;border:1px solid #ddd;border-radius:6px}
+.note{font-size:12px;color:#68778e;margin-top:10px}
+footer{background:#101b38;color:white;text-align:center;padding:28px 15px;margin-top:50px}
+footer p{font-size:13px;color:#c7d4e7;line-height:2}
+@media(max-width:600px){
+.hero h1{font-size:27px}
+.heading h2{font-size:23px}
+.tool-box{padding:17px}
+}
+</style>
+</head>
+<body>
+<header>
+<div>
+<div class="logo">Sodah<span>Tool</span></div>
+<p>Smart Online Tools for Everyone</p>
+</div>
+<div>Free Online Tools</div>
+</header>
+<section class="hero">
+<h1>All Your Tools in One Place</h1>
+<p>Free, Fast & Easy Online Tools for Photos and Documents.</p>
+<div class="search">
+<input type="search" id="search" placeholder="Search your tools..." oninput="searchTools()">
+</div>
+</section>
+<div class="container">
+<div class="heading">
+<h2>Our Online Tools</h2>
+<p>Select a tool and get your work done instantly.</p>
+</div>
+<div class="grid" id="toolGrid">
+<div class="card" data-name="passport photo">
+<div class="icon">📸</div>
+<h3>8 Passport Size Photos</h3>
+<p>Create 8 passport-style copies from one photo.</p>
+<button onclick="showTool('passport')">Use Tool →</button>
+</div>
+<div class="card" data-name="image resizer">
+<div class="icon">🖼️</div>
+<h3>Image Resizer</h3>
+<p>Change image width and height easily.</p>
+<button onclick="showTool('resize')">Use Tool →</button>
+</div>
+<div class="card" data-name="text to pdf">
+<div class="icon">📝</div>
+<h3>Text to PDF</h3>
+<p>Convert your text into a downloadable PDF.</p>
+<button onclick="showTool('textpdf')">Use Tool →</button>
+</div>
+<div class="card" data-name="image to pdf">
+<div class="icon">📄</div>
+<h3>Image to PDF</h3>
+<p>Convert one or multiple images into PDF.</p>
+<button onclick="showTool('imagepdf')">Use Tool →</button>
+</div>
+<div class="card" data-name="excel to pdf">
+<div class="icon">📊</div>
+<h3>Excel to PDF</h3>
+<p>Convert Excel spreadsheets into PDF files.</p>
+<button onclick="showTool('excelpdf')">Use Tool →</button>
+</div>
+</div>
+<!-- PASSPORT TOOL -->
+<div class="tool-box" id="passport">
+<h2>📸 8 Passport Size Photos</h2>
+<input type="file" id="passFile" accept="image/*">
+<label>Photo Width (mm)</label>
+<input type="number" id="passW" value="35">
+<label>Photo Height (mm)</label>
+<input type="number" id="passH" value="45">
+<button onclick="makePassport()">Create 8 Photos</button>
+<button onclick="downloadPassport()">Download Sheet</button>
+<div class="preview"><canvas id="passCanvas" style="max-width:100%;"></canvas></div>
+<p class="note">Standard 35×45 mm layout. Verify the required photo specifications before printing.</p>
+</div>
+<!-- RESIZER -->
+<div class="tool-box" id="resize">
+<h2>🖼️ Image Resizer</h2>
+<input type="file" id="resizeFile" accept="image/*">
+<label>Width (px)</label>
+<input type="number" id="resizeW" value="500">
+<label>Height (px)</label>
+<input type="number" id="resizeH" value="500">
+<label><input type="checkbox" id="keepRatio" checked style="width:auto"> Keep aspect ratio</label>
+<button onclick="resizeImage()">Resize Image</button>
+<button onclick="downloadResize()">Download Image</button>
+<div class="preview"><canvas id="resizeCanvas" style="max-width:100%;"></canvas></div>
+</div>
+<!-- TEXT PDF -->
+<div class="tool-box" id="textpdf">
+<h2>📝 Text to PDF</h2>
+<input type="text" id="pdfTitle" placeholder="Enter PDF title">
+<textarea id="pdfText" placeholder="Write or paste your text here..."></textarea>
+<button onclick="makeTextPDF()">Download PDF</button>
+</div>
+<!-- IMAGE PDF -->
+<div class="tool-box" id="imagepdf">
+<h2>📄 Image to PDF</h2>
+<input type="file" id="imagePdfFiles" accept="image/*" multiple>
+<p class="note">Select one or multiple images.</p>
+<button onclick="makeImagePDF()">Create PDF</button>
+</div>
+<!-- EXCEL PDF -->
+<div class="tool-box" id="excelpdf">
+<h2>📊 Excel to PDF</h2>
+<input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
+<button onclick="makeExcelPDF()">Convert Excel to PDF</button>
+<p class="note">Excel conversion uses browser libraries. Large or complex spreadsheets may need formatting adjustments.</p>
+</div>
+</div>
+<footer>
+<h2>SodahTool</h2>
+<p>Smart Online Tools for Everyone</p>
+<p>Free • Fast • Easy • Mobile Friendly</p>
+<p>© 2026 SodahTool. All Rights Reserved.</p>
+</footer>
+<!-- PDF LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+let passportImage=null;
+let resizedImage=null;
+function showTool(id){
+document.querySelectorAll('.tool-box').forEach(x=>x.style.display='none');
+document.getElementById(id).style.display='block';
+document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+function searchTools(){
+let q=document.getElementById('search').value.toLowerCase();
+document.querySelectorAll('.card').forEach(c=>{
+c.style.display=c.dataset.name.includes(q)?'block':'none';
+});
+}
+function loadImage(file,callback){
+if(!file){alert('Please select an image.');return;}
+let img=new Image();
+img.onload=()=>callback(img);
+img.onerror=()=>alert('Unable to load image.');
+img.src=URL.createObjectURL(file);
+}
+// PASSPORT PHOTO
+document.getElementById('passFile').addEventListener('change',function(){
+loadImage(this.files[0],img=>passportImage=img);
+});
+function makePassport(){
+if(!passportImage){alert('Please upload a photo first.');return;}
+let c=document.getElementById('passCanvas');
+let ctx=c.getContext('2d');
+c.width=1000;c.height=1300;
+ctx.fillStyle='white';ctx.fillRect(0,0,c.width,c.height);
+let w=280,h=360,gap=35;
+for(let i=0;i<8;i++){
+let x=55+(i%2)*(w+gap);
+let y=35+Math.floor(i/2)*(h+35);
+ctx.drawImage(passportImage,x,y,w,h);
+ctx.strokeStyle='#aaa';ctx.strokeRect(x,y,w,h);
+}
+}
+function downloadPassport(){
+let c=document.getElementById('passCanvas');
+if(!passportImage){alert('Create photos first.');return;}
+downloadCanvas(c,'SodahTool-Passport-Photos.png');
+}
+// IMAGE RESIZER
+function resizeImage(){
+let f=document.getElementById('resizeFile').files[0];
+if(!f){alert('Select an image.');return;}
+loadImage(f,img=>{
+let w=parseInt(document.getElementById('resizeW').value);
+let h=parseInt(document.getElementById('resizeH').value);
+if(!w||!h||w<1||h<1){alert('Enter valid dimensions.');return;}
+if(document.getElementById('keepRatio').checked){
+let ratio=Math.min(w/img.width,h/img.height);
+w=Math.round(img.width*ratio);
+h=Math.round(img.height*ratio);
+}
+let c=document.getElementById('resizeCanvas');
+c.width=w;c.height=h;
+c.getContext('2d').drawImage(img,0,0,w,h);
+resizedImage=c;
+});
+}
+function downloadResize(){
+if(!resizedImage){alert('Resize an image first.');return;}
+downloadCanvas(resizedImage,'SodahTool-Resized.png');
+}
+function downloadCanvas(c,name){
+let a=document.createElement('a');
+a.download=name;a.href=c.toDataURL('image/png');a.click();
+}
+// TEXT TO PDF
+function makeTextPDF(){
+let {jsPDF}=window.jspdf;
+let text=document.getElementById('pdfText').value;
+let title=document.getElementById('pdfTitle').value||'My Document';
+if(!text.trim()){alert('Enter some text.');return;}
+let pdf=new jsPDF();
+pdf.setFontSize(18);pdf.text(title,15,20);
+pdf.setFontSize(11);
+let lines=pdf.splitTextToSize(text,180);
+let y=32;
+lines.forEach(line=>{
+if(y>280){pdf.addPage();y=20;}
+pdf.text(line,15,y);y+=7;
+});
+pdf.save('SodahTool-Text.pdf');
+}
+// IMAGE TO PDF
+async function makeImagePDF(){
+let files=[...document.getElementById('imagePdfFiles').files];
+if(!files.length){alert('Select images first.');return;}
+let {jsPDF}=window.jspdf;
+let pdf=new jsPDF();
+for(let i=0;i<files.length;i++){
+let data=await new Promise((resolve,reject)=>{
+let r=new FileReader();
+r.onload=()=>resolve(r.result);
+r.onerror=reject;
+r.readAsDataURL(files[i]);
+});
+let img=await new Promise((resolve,reject)=>{
+let im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=data;
+});
+if(i>0)pdf.addPage();
+let pageW=pdf.internal.pageSize.getWidth()-20;
+let pageH=pdf.internal.pageSize.getHeight()-20;
+let ratio=Math.min(pageW/img.width,pageH/img.height);
+let w=img.width*ratio,h=img.height*ratio;
+pdf.addImage(data,'JPEG',10+(pageW-w)/2,10+(pageH-h)/2,w,h);
+}
+pdf.save('SodahTool-Images.pdf');
+}
+// EXCEL TO PDF
+function makeExcelPDF(){
+let f=document.getElementById('excelFile').files[0];
+if(!f){alert('Select an Excel file.');return;}
+let reader=new FileReader();
+reader.onload=function(e){
+try{
+let wb=XLSX.read(e.target.result,{type:'array'});
+let sheet=wb.Sheets[wb.SheetNames[0]];
+let rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:''});
+let {jsPDF}=window.jspdf;
+let pdf=new jsPDF({orientation:'landscape'});
+let y=15;
+pdf.setFontSize(8);
+rows.forEach(row=>{
+let line=row.map(v=>String(v)).join(' | ');
+let lines=pdf.splitTextToSize(line,270);
+lines.forEach(l=>{
+if(y>195){pdf.addPage();y=15;}
+pdf.text(l,10,y);y+=6;
+});
+});
+pdf.save('SodahTool-Excel.pdf');
+}catch(err){alert('Could not convert this file.');}
+};
+reader.readAsArrayBuffer(f);
+}
+</script>
+</body>
+</html>
